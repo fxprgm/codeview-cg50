@@ -1,4 +1,6 @@
 /build*/
-/*.g3a
+*.g3a
 __pycache__/
 .DS_Store
+.vscode/
+*.swp
