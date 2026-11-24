@@ -1,8 +1,8 @@
 # CodeView
 
 CodeView is an add-in for the Casio fx-CG50 that shows the Casio BASIC programs of the PRGM
-app and the Python (`.py`) scripts on the calculator in a readable way: a fixed-width font in
-six sizes, line numbers, automatic indentation of blocks, and syntax colours, in a light or a
+app and the Python (`.py`) scripts on the calculator in a readable way: fixed-width fonts in
+eight sizes (two of them from the C47 calculator firmware), line numbers, automatic indentation of blocks, and syntax colours, in a light or a
 dark theme. It only reads programs; it never changes them.
 
 ![A Casio BASIC program in CodeView](docs/images/basic.png)
@@ -13,6 +13,10 @@ dark theme. It only reads programs; it never changes them.
 ![A Python script in CodeView](docs/images/python.png)
 
 *A Python script in the dark theme with the smaller 6x13 font.*
+
+![A Casio BASIC program in C47's font](docs/images/c47font.png)
+
+*The C47 11x20 font: C47's Standard font, the one its menus and labels use.*
 
 ## Features
 
@@ -27,7 +31,11 @@ dark theme. It only reads programs; it never changes them.
 - Colours keywords, commands, functions, strings, comments, numbers and operators. Python
   keywords, strings (including triple-quoted ones), comments, numbers and function calls are
   coloured too.
-- Six fixed-width font sizes: 5x7, 6x10, 6x13, 8x13, 9x15 and 10x20.
+- Eight fixed-width fonts: 5x7, 6x10, 6x13, 8x13, 9x15 and 10x20, and two fonts of the
+  [C47](https://gitlab.com/rpncalculators/c43) calculator firmware (the R47's), C47 6x8
+  (its Tiny font) and C47 11x20 (its Standard font). C47's fonts are proportional; CodeView
+  centres each glyph in a fixed-width cell. The few characters they lack come from the 5x7
+  and 10x20 fonts (made bold for the 11x20 one).
 - Line numbers on or off; long lines either wrap or scroll sideways.
 - Light and dark themes.
 - Remembers the theme, font size, wrapping and line numbers in `CodeView.cfg` in the storage
@@ -83,6 +91,9 @@ This makes `CodeView.g3a`.
 `src/fonts.c` and `src/charmap.c` are generated files; they only need to be made again after
 changing the fonts or the character map. `python3 tools/mkdata.py` makes them from the fonts in
 `tools/fonts/` and the character database `tools/chars.toml` (it needs Python 3.11 or later).
+`tools/fonts/C47-*.bdf` are made from C47's TrueType fonts by
+`python3 tools/c47fonts.py <C47 source>/res/fonts` (it needs freetype-py), which draws them the
+way C47's own build does, so the pixels are the ones C47 shows.
 `tools/mkicon.py` draws the menu icons (it needs Pillow).
 
 ## Credits
@@ -90,8 +101,10 @@ changing the fonts or the character map. `python3 tools/mkdata.py` makes them fr
 - The table from CASIO character codes to Unicode (`src/charmap.c`) is generated from the
   character database of [Cahute](https://gitlab.com/cahute/cahute) (`tools/chars.toml`),
   copyright 2024 Thomas Touhey, under the CeCILL 2.1 licence.
-- The fonts are the X.org misc-fixed fonts (`tools/fonts/`, by Markus Kuhn and others), which
-  are in the public domain.
+- The fixed fonts are the X.org misc-fixed fonts (`tools/fonts/`, by Markus Kuhn and others),
+  which are in the public domain.
+- The C47 fonts (`tools/fonts/C47-*.bdf`) come from C47's `C47__TinyFont.ttf` and
+  `C47__StandardFont.ttf`, copyright 2013-2026 The C47 and WP43 Team, under the GPL v3.
 - The OS system call numbers come from Simon Lothar's fx-CG documentation.
 - CodeView runs on Lephenixnoir's gint and is built with the fxSDK.
 
@@ -99,4 +112,6 @@ changing the fonts or the character map. `python3 tools/mkdata.py` makes them fr
 
 GPL-3.0-or-later (see `LICENSE`). `tools/chars.toml` and the table generated from it,
 `src/charmap.c`, come from Cahute and stay under the CeCILL 2.1 licence, which is compatible with
-the GPL. The fonts are public domain (`tools/fonts/COPYING-misc-misc`).
+the GPL. The misc-fixed fonts are public domain (`tools/fonts/COPYING-misc-misc`). The C47 fonts
+are under the GPL v3, so CodeView as built (`CodeView.g3a`, `src/fonts.c`) is distributed
+under version 3 of the GPL.
