@@ -29,6 +29,18 @@ static const cvfont_t *font(void)
 	return &cv_fonts[settings.font];
 }
 
+/* steps the font size: settings.font moves by dir in cv_font_order */
+static bool font_step(int dir)
+{
+	int i = 0;
+	while (i < CV_NFONTS - 1 && cv_font_order[i] != settings.font)
+		i++;
+	if (i + dir < 0 || i + dir >= CV_NFONTS)
+		return false;
+	settings.font = cv_font_order[i + dir];
+	return true;
+}
+
 static int digits(int n)
 {
 	int d = 1;
@@ -223,13 +235,13 @@ void view_screen(const source_t *s)
 			break;
 		case KEY_F1:
 		case KEY_SUB:
-			if (settings.font > 0)
-				settings.font--, v.sub = 0;
+			if (font_step(-1))
+				v.sub = 0;
 			break;
 		case KEY_F2:
 		case KEY_ADD:
-			if (settings.font < CV_NFONTS - 1)
-				settings.font++, v.sub = 0;
+			if (font_step(1))
+				v.sub = 0;
 			break;
 		case KEY_F3:
 			settings.wrap = !settings.wrap;
